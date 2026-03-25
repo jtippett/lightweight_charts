@@ -37,13 +37,19 @@ defmodule LightweightCharts.Grid do
       %{}
       |> Encoder.maybe_put("visible", grid.vert_lines_visible)
       |> Encoder.maybe_put("color", grid.vert_lines_color)
-      |> Encoder.maybe_put("style", grid.vert_lines_style && Encoder.encode_enum(grid.vert_lines_style))
+      |> Encoder.maybe_put(
+        "style",
+        grid.vert_lines_style && Encoder.encode_enum(grid.vert_lines_style)
+      )
 
     horz =
       %{}
       |> Encoder.maybe_put("visible", grid.horz_lines_visible)
       |> Encoder.maybe_put("color", grid.horz_lines_color)
-      |> Encoder.maybe_put("style", grid.horz_lines_style && Encoder.encode_enum(grid.horz_lines_style))
+      |> Encoder.maybe_put(
+        "style",
+        grid.horz_lines_style && Encoder.encode_enum(grid.horz_lines_style)
+      )
 
     %{}
     |> Encoder.maybe_put("vertLines", if(vert == %{}, do: nil, else: vert))
