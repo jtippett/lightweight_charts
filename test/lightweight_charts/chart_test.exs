@@ -75,9 +75,7 @@ defmodule LightweightCharts.ChartTest do
         |> Chart.add_series(
           Series.candlestick(id: "candles", up_color: "#26a69a", down_color: "#ef5350")
         )
-        |> Chart.add_series(
-          Series.line(id: "sma", color: "#2196f3", line_width: 2)
-        )
+        |> Chart.add_series(Series.line(id: "sma", color: "#2196f3", line_width: 2))
         |> Chart.on(:click)
 
       assert chart.layout.background_color == "#1a1a2e"

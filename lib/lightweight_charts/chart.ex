@@ -118,8 +118,14 @@ defmodule LightweightCharts.Chart do
     |> maybe_put("grid", chart.grid && Encoder.encode(chart.grid))
     |> maybe_put("crosshair", chart.crosshair && Encoder.encode(chart.crosshair))
     |> maybe_put("timeScale", chart.time_scale && Encoder.encode(chart.time_scale))
-    |> maybe_put("rightPriceScale", chart.right_price_scale && Encoder.encode(chart.right_price_scale))
-    |> maybe_put("leftPriceScale", chart.left_price_scale && Encoder.encode(chart.left_price_scale))
+    |> maybe_put(
+      "rightPriceScale",
+      chart.right_price_scale && Encoder.encode(chart.right_price_scale)
+    )
+    |> maybe_put(
+      "leftPriceScale",
+      chart.left_price_scale && Encoder.encode(chart.left_price_scale)
+    )
     |> maybe_put("autoSize", chart.auto_size)
     |> maybe_put("width", chart.width)
     |> maybe_put("height", chart.height)

@@ -21,11 +21,11 @@ defmodule LightweightCharts.Live.ChartComponent do
 
   alias LightweightCharts.Chart
 
-  attr :id, :string, required: true, doc: "Unique DOM ID for the chart container"
-  attr :chart, Chart, required: true, doc: "Chart configuration struct"
-  attr :class, :string, default: nil, doc: "CSS class(es) for the container div"
-  attr :style, :string, default: nil, doc: "Inline CSS styles for the container div"
-  attr :rest, :global, doc: "Additional HTML attributes"
+  attr(:id, :string, required: true, doc: "Unique DOM ID for the chart container")
+  attr(:chart, Chart, required: true, doc: "Chart configuration struct")
+  attr(:class, :string, default: nil, doc: "CSS class(es) for the container div")
+  attr(:style, :string, default: nil, doc: "Inline CSS styles for the container div")
+  attr(:rest, :global, doc: "Additional HTML attributes")
 
   @doc "Renders a lightweight chart container."
   def chart(assigns) do

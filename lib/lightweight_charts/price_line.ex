@@ -7,7 +7,15 @@ defmodule LightweightCharts.PriceLine do
       PriceLine.new(price: 150.0, color: "#ff0000", line_style: :dashed, title: "Target")
   """
 
-  defstruct [:price, :color, :line_width, :line_style, :title, :axis_label_visible, :axis_label_color]
+  defstruct [
+    :price,
+    :color,
+    :line_width,
+    :line_style,
+    :title,
+    :axis_label_visible,
+    :axis_label_color
+  ]
 
   @type t :: %__MODULE__{
           price: number(),

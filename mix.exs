@@ -2,7 +2,7 @@ defmodule LightweightCharts.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @source_url "https://github.com/user/lightweight_charts"
+  @source_url "https://github.com/jtippett/lightweight_charts"
 
   def project do
     [

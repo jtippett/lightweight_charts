@@ -24,7 +24,8 @@ defmodule LightweightCharts.Live.ChartComponentTest do
   end
 
   test "data-config contains valid JSON with series" do
-    chart = Chart.new() |> Chart.add_series(Series.candlestick(id: "candles", up_color: "#26a69a"))
+    chart =
+      Chart.new() |> Chart.add_series(Series.candlestick(id: "candles", up_color: "#26a69a"))
 
     assigns = %{chart: chart}
 

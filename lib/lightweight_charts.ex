@@ -53,11 +53,11 @@ defmodule LightweightCharts do
   alias LightweightCharts.{Chart, Live.Helpers}
 
   # Re-export the function component
-  attr :id, :string, required: true
-  attr :chart, Chart, required: true
-  attr :class, :string, default: nil
-  attr :style, :string, default: nil
-  attr :rest, :global
+  attr(:id, :string, required: true)
+  attr(:chart, Chart, required: true)
+  attr(:class, :string, default: nil)
+  attr(:style, :string, default: nil)
+  attr(:rest, :global)
 
   @doc "Renders a lightweight chart. See `LightweightCharts.Live.ChartComponent.chart/1`."
   def chart(assigns), do: LightweightCharts.Live.ChartComponent.chart(assigns)

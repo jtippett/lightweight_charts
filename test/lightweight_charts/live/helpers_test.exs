@@ -38,7 +38,7 @@ defmodule LightweightCharts.Live.HelpersTest do
 
       encoded = Helpers.encode_data_points(data)
 
-      assert hd(encoded)["time"] == 1705276800
+      assert hd(encoded)["time"] == 1_705_276_800
       assert hd(encoded)["value"] == 42.5
     end
 
@@ -51,10 +51,10 @@ defmodule LightweightCharts.Live.HelpersTest do
     end
 
     test "passes through integer timestamps" do
-      data = [%{time: 1705276800, value: 42.5}]
+      data = [%{time: 1_705_276_800, value: 42.5}]
       encoded = Helpers.encode_data_points(data)
 
-      assert hd(encoded)["time"] == 1705276800
+      assert hd(encoded)["time"] == 1_705_276_800
     end
   end
 end

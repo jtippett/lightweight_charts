@@ -68,12 +68,12 @@ defmodule LightweightCharts.EncoderTest do
 
     test "converts DateTime to Unix timestamp" do
       dt = ~U[2024-01-15 12:30:00Z]
-      assert Encoder.encode_time(dt) == 1705321800
+      assert Encoder.encode_time(dt) == 1_705_321_800
     end
 
     test "converts NaiveDateTime to Unix timestamp" do
       ndt = ~N[2024-01-15 12:30:00]
-      assert Encoder.encode_time(ndt) == 1705321800
+      assert Encoder.encode_time(ndt) == 1_705_321_800
     end
 
     test "converts Date to YYYY-MM-DD string" do
@@ -82,7 +82,7 @@ defmodule LightweightCharts.EncoderTest do
     end
 
     test "passes through integers as Unix timestamps" do
-      assert Encoder.encode_time(1705318200) == 1705318200
+      assert Encoder.encode_time(1_705_318_200) == 1_705_318_200
     end
 
     test "passes through YYYY-MM-DD strings" do
