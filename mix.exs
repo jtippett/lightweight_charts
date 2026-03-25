@@ -37,7 +37,7 @@ defmodule LightweightCharts.MixProject do
     [
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => @source_url},
-      files: ~w(lib priv assets mix.exs README.md LICENSE)
+      files: ~w(lib assets package.json mix.exs README.md LICENSE)
     ]
   end
 
