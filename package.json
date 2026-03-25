@@ -1,0 +1,11 @@
+{
+  "name": "lightweight_charts",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./assets/js/index.js",
+  "module": "./assets/js/index.js",
+  "exports": {
+    ".": "./assets/js/index.js",
+    "./hooks": "./assets/js/hooks/lightweight_charts.js"
+  }
+}
