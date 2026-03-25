@@ -89,22 +89,71 @@ When integrating this library into a Phoenix project, three things must be in pl
 
 The hook must be imported and registered with the LiveSocket. The import path depends on the bundler:
 
+#### esbuild (Phoenix default) or bun
+
 ```javascript
-// esbuild (Phoenix default) — resolve from deps/
 import { LightweightChartsHook } from "../../deps/lightweight_charts"
 
-// Then add to hooks:
 const liveSocket = new LiveSocket("/live", Socket, {
   hooks: { LightweightCharts: LightweightChartsHook }
 })
 ```
 
+#### Vite (phoenix_vite)
+
+Vite cannot resolve the `../../deps/` path the way esbuild can. Add a resolve alias in `vite.config.mjs`:
+
+```javascript
+// Hex dependency (deps/ exists on disk):
+resolve: {
+  alias: {
+    "lightweight_charts": "../deps/lightweight_charts/assets/js/index.js",
+  },
+},
+
+// Path dependency (deps/ does NOT exist — Mix references the source directly):
+resolve: {
+  alias: {
+    "lightweight_charts": "/absolute/path/to/lightweight-charts-ex/assets/js/index.js",
+  },
+},
+```
+
+Then import using the bare specifier:
+
+```javascript
+import { LightweightChartsHook } from "lightweight_charts"
+```
+
+**Vite also requires the standalone JS build.** The default vendored `lightweight-charts.mjs` uses a non-standalone build that has an external `import "fancy-canvas"`. esbuild resolves this from node_modules, but Vite fails with `Failed to resolve import "fancy-canvas"`. Fix by replacing the vendored file:
+
+```bash
+cp lightweight-charts/dist/lightweight-charts.standalone.production.mjs \
+   assets/vendor/lightweight-charts.mjs
+```
+
+#### Phoenix 1.8 hook wiring
+
+In Phoenix 1.8, `app.js` includes colocated hooks. Spread them alongside the LightweightCharts hook:
+
+```javascript
+import {hooks as colocatedHooks} from "phoenix-colocated/demo"
+import {LightweightChartsHook} from "../../deps/lightweight_charts"
+
+const liveSocket = new LiveSocket("/live", Socket, {
+  hooks: {...colocatedHooks, LightweightCharts: LightweightChartsHook}
+})
+```
+
+#### Resolution chain
+
 The `package.json` at the package root tells the bundler to resolve `lightweight_charts` to `assets/js/index.js`, which re-exports the hook from `assets/js/hooks/lightweight_charts.js`. The hook imports the vendored library from `assets/vendor/lightweight-charts.mjs`.
 
 **This is the most common failure point.** If the chart div appears but nothing renders, the hook isn't registered. Check:
-- The import path resolves correctly
+- The import path resolves correctly for your bundler
 - The hook name in `hooks: { LightweightCharts: ... }` matches `phx-hook="LightweightCharts"` on the div
 - The vendored `.mjs` file exists at the expected relative path from the hook
+- With Vite: you're using the standalone build (no `fancy-canvas` external import)
 
 ### 3. LiveView code (your app)
 
@@ -191,6 +240,36 @@ mix phx.server
 mix test            # 75 tests
 mix test --cover    # with coverage
 ```
+
+## Bundler Compatibility Matrix
+
+| Bundler | Import path | Vendored build needed | Notes |
+|---|---|---|---|
+| esbuild | `../../deps/lightweight_charts` | Default (non-standalone) works | Phoenix default, no config needed |
+| bun | `../../deps/lightweight_charts` | Default works | Drop-in esbuild replacement |
+| Vite | Bare specifier via `resolve.alias` | **Standalone build required** | Must alias in vite.config.mjs, swap to standalone `.mjs` |
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Chart div appears but is empty | Hook not registered | Check import path + hooks object in LiveSocket |
+| `Failed to resolve import "fancy-canvas"` | Non-standalone vendored build under Vite | Swap to `lightweight-charts.standalone.production.mjs` |
+| `Failed to resolve import "../../deps/lightweight_charts"` | Vite can't resolve `../../deps/` paths | Add `resolve.alias` in `vite.config.mjs` |
+| Chart renders but no data | `push_data` called before `connected?(socket)` | Guard data pushes with `if connected?(socket)` |
+| Chart renders but is 0px tall | Container has no explicit height | Add `class="h-96"` or `style="height: 400px"` to the component |
+| Series ID mismatch | `push_data` series_id doesn't match `Series.*(id: ...)` | Ensure IDs match exactly (string comparison) |
+
+## Phoenix 1.8 Integration Notes
+
+These are real-world learnings from integrating with Phoenix 1.8 projects:
+
+- **Tailwind v4**: No `tailwind.config.js` needed. CSS uses `@import "tailwindcss"` syntax in `app.css`. Chart container sizing works with arbitrary value classes like `class="h-[600px]"`.
+- **Colocated hooks**: Phoenix 1.8 generates a `colocatedHooks` import. Spread it alongside the LightweightCharts hook (see hook wiring section above). Colocated hook names start with `.` — the LightweightCharts hook does not (it's an external hook).
+- **`phx-update="ignore"` is mandatory**: The chart component sets this automatically. If you build a custom wrapper, you MUST include it — otherwise LiveView will patch the chart DOM and destroy the canvas.
+- **`phx-hook` requires a DOM id**: The chart component requires `id` as a required attribute for this reason.
+- **`push_event` socket rebinding**: Always rebind or return the socket after `push_event`. The helpers (`push_data`, `push_update`, etc.) return the socket — pipe them.
+- **Vendor imports**: Phoenix 1.8 only supports `app.js` and `app.css` bundles. You cannot reference external vendor scripts via `<script src>` in layouts. The vendored `lightweight-charts.mjs` is imported into the JS bundle, not loaded separately.
 
 ## Known Limitations
 

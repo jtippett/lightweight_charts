@@ -114,25 +114,22 @@ defmodule LightweightCharts.Chart do
   @spec to_json(t()) :: map()
   def to_json(%__MODULE__{} = chart) do
     %{}
-    |> maybe_put("layout", chart.layout && Encoder.encode(chart.layout))
-    |> maybe_put("grid", chart.grid && Encoder.encode(chart.grid))
-    |> maybe_put("crosshair", chart.crosshair && Encoder.encode(chart.crosshair))
-    |> maybe_put("timeScale", chart.time_scale && Encoder.encode(chart.time_scale))
-    |> maybe_put(
+    |> Encoder.maybe_put("layout", chart.layout && Encoder.encode(chart.layout))
+    |> Encoder.maybe_put("grid", chart.grid && Encoder.encode(chart.grid))
+    |> Encoder.maybe_put("crosshair", chart.crosshair && Encoder.encode(chart.crosshair))
+    |> Encoder.maybe_put("timeScale", chart.time_scale && Encoder.encode(chart.time_scale))
+    |> Encoder.maybe_put(
       "rightPriceScale",
       chart.right_price_scale && Encoder.encode(chart.right_price_scale)
     )
-    |> maybe_put(
+    |> Encoder.maybe_put(
       "leftPriceScale",
       chart.left_price_scale && Encoder.encode(chart.left_price_scale)
     )
-    |> maybe_put("autoSize", chart.auto_size)
-    |> maybe_put("width", chart.width)
-    |> maybe_put("height", chart.height)
+    |> Encoder.maybe_put("autoSize", chart.auto_size)
+    |> Encoder.maybe_put("width", chart.width)
+    |> Encoder.maybe_put("height", chart.height)
     |> Map.put("series", Enum.map(chart.series, &Encoder.encode/1))
     |> Map.put("events", Enum.map(chart.events, &Map.fetch!(@event_names, &1)))
   end
-
-  defp maybe_put(map, _key, nil), do: map
-  defp maybe_put(map, key, value), do: Map.put(map, key, value)
 end

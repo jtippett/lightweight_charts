@@ -139,4 +139,21 @@ defmodule LightweightCharts.Encoder do
   def encode_enum(value) when is_atom(value) do
     Map.fetch!(@enums, value)
   end
+
+  @doc """
+  Puts a key-value pair into a map only if the value is not nil.
+
+  Returns the map unchanged when value is nil, otherwise adds the entry.
+
+  ## Examples
+
+      iex> LightweightCharts.Encoder.maybe_put(%{}, "color", "#fff")
+      %{"color" => "#fff"}
+
+      iex> LightweightCharts.Encoder.maybe_put(%{}, "color", nil)
+      %{}
+  """
+  @spec maybe_put(map(), any(), any()) :: map()
+  def maybe_put(map, _key, nil), do: map
+  def maybe_put(map, key, value), do: Map.put(map, key, value)
 end

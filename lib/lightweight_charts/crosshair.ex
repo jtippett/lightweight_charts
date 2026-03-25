@@ -56,28 +56,25 @@ defmodule LightweightCharts.Crosshair do
 
     vert =
       %{}
-      |> maybe_put("color", ch.vert_line_color)
-      |> maybe_put("width", ch.vert_line_width)
-      |> maybe_put("style", ch.vert_line_style && Encoder.encode_enum(ch.vert_line_style))
-      |> maybe_put("visible", ch.vert_line_visible)
-      |> maybe_put("labelVisible", ch.vert_line_label_visible)
-      |> maybe_put("labelBackgroundColor", ch.vert_line_label_background_color)
+      |> Encoder.maybe_put("color", ch.vert_line_color)
+      |> Encoder.maybe_put("width", ch.vert_line_width)
+      |> Encoder.maybe_put("style", ch.vert_line_style && Encoder.encode_enum(ch.vert_line_style))
+      |> Encoder.maybe_put("visible", ch.vert_line_visible)
+      |> Encoder.maybe_put("labelVisible", ch.vert_line_label_visible)
+      |> Encoder.maybe_put("labelBackgroundColor", ch.vert_line_label_background_color)
 
     horz =
       %{}
-      |> maybe_put("color", ch.horz_line_color)
-      |> maybe_put("width", ch.horz_line_width)
-      |> maybe_put("style", ch.horz_line_style && Encoder.encode_enum(ch.horz_line_style))
-      |> maybe_put("visible", ch.horz_line_visible)
-      |> maybe_put("labelVisible", ch.horz_line_label_visible)
-      |> maybe_put("labelBackgroundColor", ch.horz_line_label_background_color)
+      |> Encoder.maybe_put("color", ch.horz_line_color)
+      |> Encoder.maybe_put("width", ch.horz_line_width)
+      |> Encoder.maybe_put("style", ch.horz_line_style && Encoder.encode_enum(ch.horz_line_style))
+      |> Encoder.maybe_put("visible", ch.horz_line_visible)
+      |> Encoder.maybe_put("labelVisible", ch.horz_line_label_visible)
+      |> Encoder.maybe_put("labelBackgroundColor", ch.horz_line_label_background_color)
 
     %{}
-    |> maybe_put("mode", ch.mode && Encoder.encode_enum(ch.mode))
-    |> maybe_put("vertLine", if(vert == %{}, do: nil, else: vert))
-    |> maybe_put("horzLine", if(horz == %{}, do: nil, else: horz))
+    |> Encoder.maybe_put("mode", ch.mode && Encoder.encode_enum(ch.mode))
+    |> Encoder.maybe_put("vertLine", if(vert == %{}, do: nil, else: vert))
+    |> Encoder.maybe_put("horzLine", if(horz == %{}, do: nil, else: horz))
   end
-
-  defp maybe_put(map, _key, nil), do: map
-  defp maybe_put(map, key, value), do: Map.put(map, key, value)
 end

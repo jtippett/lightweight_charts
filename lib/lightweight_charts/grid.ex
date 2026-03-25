@@ -35,21 +35,18 @@ defmodule LightweightCharts.Grid do
 
     vert =
       %{}
-      |> maybe_put("visible", grid.vert_lines_visible)
-      |> maybe_put("color", grid.vert_lines_color)
-      |> maybe_put("style", grid.vert_lines_style && Encoder.encode_enum(grid.vert_lines_style))
+      |> Encoder.maybe_put("visible", grid.vert_lines_visible)
+      |> Encoder.maybe_put("color", grid.vert_lines_color)
+      |> Encoder.maybe_put("style", grid.vert_lines_style && Encoder.encode_enum(grid.vert_lines_style))
 
     horz =
       %{}
-      |> maybe_put("visible", grid.horz_lines_visible)
-      |> maybe_put("color", grid.horz_lines_color)
-      |> maybe_put("style", grid.horz_lines_style && Encoder.encode_enum(grid.horz_lines_style))
+      |> Encoder.maybe_put("visible", grid.horz_lines_visible)
+      |> Encoder.maybe_put("color", grid.horz_lines_color)
+      |> Encoder.maybe_put("style", grid.horz_lines_style && Encoder.encode_enum(grid.horz_lines_style))
 
     %{}
-    |> maybe_put("vertLines", if(vert == %{}, do: nil, else: vert))
-    |> maybe_put("horzLines", if(horz == %{}, do: nil, else: horz))
+    |> Encoder.maybe_put("vertLines", if(vert == %{}, do: nil, else: vert))
+    |> Encoder.maybe_put("horzLines", if(horz == %{}, do: nil, else: horz))
   end
-
-  defp maybe_put(map, _key, nil), do: map
-  defp maybe_put(map, key, value), do: Map.put(map, key, value)
 end

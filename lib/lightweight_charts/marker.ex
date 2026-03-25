@@ -43,14 +43,11 @@ defmodule LightweightCharts.Marker do
     alias LightweightCharts.Encoder
 
     %{"time" => Encoder.encode_time(m.time)}
-    |> maybe_put("position", m.position && Map.fetch!(@positions, m.position))
-    |> maybe_put("shape", m.shape && Map.fetch!(@shapes, m.shape))
-    |> maybe_put("color", m.color)
-    |> maybe_put("text", m.text)
-    |> maybe_put("size", m.size)
-    |> maybe_put("id", m.id)
+    |> Encoder.maybe_put("position", m.position && Map.fetch!(@positions, m.position))
+    |> Encoder.maybe_put("shape", m.shape && Map.fetch!(@shapes, m.shape))
+    |> Encoder.maybe_put("color", m.color)
+    |> Encoder.maybe_put("text", m.text)
+    |> Encoder.maybe_put("size", m.size)
+    |> Encoder.maybe_put("id", m.id)
   end
-
-  defp maybe_put(map, _key, nil), do: map
-  defp maybe_put(map, key, value), do: Map.put(map, key, value)
 end

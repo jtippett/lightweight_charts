@@ -53,27 +53,24 @@ defmodule LightweightCharts.PriceScale do
     alias LightweightCharts.Encoder
 
     map = %{}
-    map = maybe_put(map, "autoScale", ps.auto_scale)
-    map = maybe_put(map, "mode", ps.mode && Encoder.encode_enum(ps.mode))
-    map = maybe_put(map, "invertScale", ps.invert_scale)
-    map = maybe_put(map, "alignLabels", ps.align_labels)
-    map = maybe_put(map, "borderVisible", ps.border_visible)
-    map = maybe_put(map, "borderColor", ps.border_color)
-    map = maybe_put(map, "entireTextOnly", ps.entire_text_only)
-    map = maybe_put(map, "visible", ps.visible)
-    map = maybe_put(map, "ticksVisible", ps.ticks_visible)
-    map = maybe_put(map, "minimumWidth", ps.minimum_width)
+    map = Encoder.maybe_put(map, "autoScale", ps.auto_scale)
+    map = Encoder.maybe_put(map, "mode", ps.mode && Encoder.encode_enum(ps.mode))
+    map = Encoder.maybe_put(map, "invertScale", ps.invert_scale)
+    map = Encoder.maybe_put(map, "alignLabels", ps.align_labels)
+    map = Encoder.maybe_put(map, "borderVisible", ps.border_visible)
+    map = Encoder.maybe_put(map, "borderColor", ps.border_color)
+    map = Encoder.maybe_put(map, "entireTextOnly", ps.entire_text_only)
+    map = Encoder.maybe_put(map, "visible", ps.visible)
+    map = Encoder.maybe_put(map, "ticksVisible", ps.ticks_visible)
+    map = Encoder.maybe_put(map, "minimumWidth", ps.minimum_width)
 
     margins =
       %{}
-      |> maybe_put("top", ps.scale_margin_top)
-      |> maybe_put("bottom", ps.scale_margin_bottom)
+      |> Encoder.maybe_put("top", ps.scale_margin_top)
+      |> Encoder.maybe_put("bottom", ps.scale_margin_bottom)
 
-    map = maybe_put(map, "scaleMargins", if(margins == %{}, do: nil, else: margins))
+    map = Encoder.maybe_put(map, "scaleMargins", if(margins == %{}, do: nil, else: margins))
 
     map
   end
-
-  defp maybe_put(map, _key, nil), do: map
-  defp maybe_put(map, key, value), do: Map.put(map, key, value)
 end
