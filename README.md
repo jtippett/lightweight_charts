@@ -2,7 +2,7 @@
 
 [![Hex.pm](https://img.shields.io/hexpm/v/lightweight_charts.svg)](https://hex.pm/packages/lightweight_charts)
 [![Docs](https://img.shields.io/badge/hex-docs-blue.svg)](https://hexdocs.pm/lightweight_charts)
-[![License](https://img.shields.io/hexpm/l/lightweight_charts.svg)](https://github.com/user/lightweight_charts/blob/main/LICENSE)
+[![License](https://img.shields.io/hexpm/l/lightweight_charts.svg)](https://github.com/jtippett/lightweight_charts/blob/main/LICENSE)
 
 TradingView [Lightweight Charts](https://www.tradingview.com/lightweight-charts/) for Phoenix LiveView.
 
