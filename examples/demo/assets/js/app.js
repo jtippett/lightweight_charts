@@ -26,6 +26,7 @@ import {hooks as colocatedHooks} from "phoenix-colocated/demo"
 import topbar from "../vendor/topbar"
 
 // Import the LightweightCharts hook
+// Once published to Hex, this resolves from deps/lightweight_charts
 import {LightweightChartsHook} from "../../deps/lightweight_charts"
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
