@@ -225,6 +225,15 @@ The hook (`assets/js/hooks/lightweight_charts.js`) manages:
 - **Server events**: Listens for `lc:{id}:set_data`, `lc:{id}:update`, `lc:{id}:apply_options`, `lc:{id}:fit_content`, `lc:{id}:set_visible_range`, `lc:{id}:set_markers`
 - **Client events**: Subscribes to `click`, `dblClick`, `crosshairMove`, `visibleTimeRangeChange` and forwards them via `pushEvent`
 
+## Development Commands
+
+```bash
+mix test            # 75 tests
+mix test --cover    # with coverage
+mix format          # format code
+mix docs            # generate HexDocs
+```
+
 ## Running the Demo
 
 ```bash
@@ -234,20 +243,30 @@ mix phx.server
 # Visit http://localhost:4000
 ```
 
-## Running Tests
+## Code Conventions
+
+- **Builder API uses pipeline style**: `Chart.new() |> Chart.layout(...) |> Chart.add_series(...)`
+- **All struct fields use snake_case**; the `Encoder` module converts to camelCase for the JS side
+- **Config and data are separate concerns** — config defines chart structure (series types, colors, options), `push_data` sends the actual values. This keeps the initial config lightweight and data streamable.
+
+## Vendored JS Build
+
+The file `assets/vendor/lightweight-charts.mjs` is the **standalone** production build from TradingView (bundles `fancy-canvas` inline). This is important — the non-standalone build has an external `import "fancy-canvas"` that breaks Vite and any bundler without `fancy-canvas` in its module resolution path. If you ever need to rebuild the vendored file:
 
 ```bash
-mix test            # 75 tests
-mix test --cover    # with coverage
+cd lightweight-charts && npm install && npm run build:prod
+cp dist/lightweight-charts.standalone.production.mjs ../assets/vendor/lightweight-charts.mjs
 ```
 
 ## Bundler Compatibility Matrix
 
-| Bundler | Import path | Vendored build needed | Notes |
+The vendored standalone build works with all three bundlers out of the box:
+
+| Bundler | Import path | Extra config needed | Notes |
 |---|---|---|---|
-| esbuild | `../../deps/lightweight_charts` | Default (non-standalone) works | Phoenix default, no config needed |
-| bun | `../../deps/lightweight_charts` | Default works | Drop-in esbuild replacement |
-| Vite | Bare specifier via `resolve.alias` | **Standalone build required** | Must alias in vite.config.mjs, swap to standalone `.mjs` |
+| esbuild | `../../deps/lightweight_charts` | None | Phoenix default |
+| bun | `../../deps/lightweight_charts` | None | Drop-in esbuild replacement |
+| Vite | Bare specifier via `resolve.alias` | `resolve.alias` in `vite.config.mjs` | See Vite section above |
 
 ## Troubleshooting
 
